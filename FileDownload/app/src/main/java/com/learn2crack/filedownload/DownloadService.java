@@ -45,7 +45,7 @@ public class DownloadService extends IntentService {
                 .setContentTitle("Download")
                 .setContentText("Downloading File")
                 .setAutoCancel(true);
-        notificationManager.notify(0, notificationBuilder.build());
+        startForeground(0,notificationBuilder.build());
 
         initDownload();
 
@@ -118,7 +118,7 @@ public class DownloadService extends IntentService {
         sendIntent(download);
         notificationBuilder.setProgress(100,download.getProgress(),false);
         notificationBuilder.setContentText(String.format("Downloaded (%d/%d) MB",download.getCurrentFileSize(),download.getTotalFileSize()));
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(0,notificationBuilder.build());
     }
 
 
@@ -138,7 +138,7 @@ public class DownloadService extends IntentService {
         notificationManager.cancel(0);
         notificationBuilder.setProgress(0,0,false);
         notificationBuilder.setContentText("File Downloaded");
-        notificationManager.notify(0, notificationBuilder.build());
+        startForeground(0, notificationBuilder.build());
 
     }
 
@@ -146,5 +146,9 @@ public class DownloadService extends IntentService {
     public void onTaskRemoved(Intent rootIntent) {
         notificationManager.cancel(0);
     }
+    
+    private void stop() {
+      stopForeground(true);
+  }
 
 }
